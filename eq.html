@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Métodos Numéricos | Landing educativa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { scroll-behavior: smooth; }
+    .hero {
+      background: radial-gradient(1200px 600px at 20% 20%, #1f2937 0%, #111827 60%, #0b0f17 100%);
+      color: #fff;
+    }
+    .hero h1 { letter-spacing: .5px; }
+    .section-title { border-left: 4px solid #f59e0b; padding-left: .75rem; }
+    .code-block {
+      background: #0f172a; color: #e5e7eb; border-radius: .5rem; padding: 1rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .step { border-left: 3px solid #3b82f6; padding-left: .75rem; margin-bottom: .75rem; }
+    .card h5 { margin-bottom: .25rem; }
+    .result { background: #fef3c7; border: 1px solid #f59e0b; border-radius: .375rem; padding: .75rem; }
+    .cta-btn { box-shadow: 0 8px 24px rgba(245, 158, 11, .25); }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">Métodos Numéricos</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="nav" class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#gauss">Gauss-Jordan</a></li>
+        <li class="nav-item"><a class="nav-link" href="#newton">Newton-Raphson</a></li>
+        <li class="nav-item"><a class="nav-link" href="#biseccion">Bisección</a></li>
+        <li class="nav-item"><a class="nav-link" href="#jacobi">Jacobi</a></li>
+        <li class="nav-item"><a class="nav-link" href="#recursos">Recursos</a></li>
+      </ul>
+      <a href="#gauss" class="btn btn-warning ms-lg-3 cta-btn">Empieza ahora</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero vh-100 d-flex align-items-center">
+  <div class="container text-center">
+    <h1 class="display-5 fw-bold">Aprende métodos numéricos paso a paso</h1>
+    <p class="lead mt-3">Gauss-Jordan, Newton-Raphson, Bisección y Jacobi con teoría clara, ejemplos guiados e interactivos.</p>
+    <a href="#gauss" class="btn btn-warning btn-lg mt-4 cta-btn">Explorar</a>
+  </div>
+</header>
+
+<main class="container py-5">
+
+  <!-- Gauss-Jordan -->
+  <section id="gauss" class="py-4">
+    <h2 class="section-title">Método de Gauss-Jordan</h2>
+    <p><strong>Idea:</strong> Transformar la matriz aumentada del sistema lineal a su forma escalonada reducida por filas (RREF) mediante operaciones elementales, de modo que el lado izquierdo sea la identidad y el lado derecho contenga la solución. Este método extiende la eliminación de Gauss hasta anular los elementos por encima y por debajo de cada pivote.</p>
+
+    <h5 class="mt-3">Formulación</h5>
+    <p>Sea el sistema \(A \cdot \mathbf{x} = \mathbf{b}\) con \(A \in \mathbb{R}^{n \times n}\). Construimos la matriz aumentada \([A \mid \mathbf{b}]\) y aplicamos operaciones de fila para obtener \([I \mid \mathbf{x}]\).</p>
+
+    <h5 class="mt-3">Pasos del algoritmo</h5>
+    <div class="step"><strong>Paso 1:</strong> Seleccionar el pivote en la columna actual. Si \(a_{kk}=0\), intercambiar filas para colocar un elemento no nulo como pivote.</div>
+    <div class="step"><strong>Paso 2:</strong> Escalar la fila pivote para que el pivote sea \(1\).</div>
+    <div class="step"><strong>Paso 3:</strong> Anular todos los elementos por encima y por debajo del pivote usando combinaciones lineales de filas.</div>
+    <div class="step"><strong>Paso 4:</strong> Repetir para cada columna hasta obtener \(I\) en el lado izquierdo.</div>
+
+    <h5 class="mt-3">Ejemplo paso a paso</h5>
+    <p>Resolver el sistema:
+      
+
+\[
+        \begin{cases}
+        x + 2y - z = 4 \\
+        2x + y + z = 6 \\
+        -x + y + 2z = 3
+        \end{cases}
+      \]
+
+
+      Matriz aumentada inicial:
+      
+
+\[
+        \left[
+        \begin{array}{ccc|c}
+        1 & 2 & -1 & 4 \\
+        2 & 1 & 1 & 6 \\
+        -1 & 1 & 2 & 3
+        \end{array}
+        \right]
+      \]
+
+
+    </p>
+    <div class="code-block">
+      Paso A: R2 ← R2 − 2·R1; R3 ← R3 + R1<br/>
+      [
+      [1, 2, -1 | 4],<br/>
+      [0, -3, 3 | -2],<br/>
+      [0, 3, 1 | 7]
+      ]<br/><br/>
+      Paso B: R2 ← (-1/3)·R2 ⇒ pivote (2,2)=1<br/>
+      [
+      [1, 2, -1 | 4],<br/>
+      [0, 1, -1 | 2/3],<br/>
+      [0, 3, 1 | 7]
+      ]<br/><br/>
+      Paso C: Anular columna 2 fuera del pivote: R1 ← R1 − 2·R2; R3 ← R3 − 3·R2<br/>
+      [
+      [1, 0, 1 | 8/3],<br/>
+      [0, 1, -1 | 2/3],<br/>
+      [0, 0, 4 | 5]
+      ]<br/><br/>
+      Paso D: Escalar R3: R3 ← (1/4)·R3 ⇒ pivote (3,3)=1<br/>
+      [
+      [1, 0, 1 | 8/3],<br/>
+      [0, 1, -1 | 2/3],<br/>
+      [0, 0, 1 | 5/4]
+      ]<br/><br/>
+      Paso E: Anular columna 3 fuera del pivote: R1 ← R1 − 1·R3; R2 ← R2 + 1·R3<br/>
+      [
+      [1, 0, 0 | 17/12],<br/>
+      [0, 1, 0 | 23/12],<br/>
+      [0, 0, 1 | 5/4]
+      ]<br/><br/>
+      Solución: x = 17/12, y = 23/12, z = 5/4.
+    </div>
+
+    <h5 class="mt-3">Mini interactivo (3×3)</h5>
+    <p>Ingresa coeficientes y términos independientes. El algoritmo entregará la RREF y la solución si existe.</p>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5>Coeficientes A (3×3)</h5>
+            <div class="row g-2">
+              <div class="col-4"><input class="form-control" id="a11" value="1"></div>
+              <div class="col-4"><input class="form-control" id="a12" value="2"></div>
+              <div class="col-4"><input class="form-control" id="a13" value="-1"></div>
+              <div class="col-4"><input class="form-control" id="a21" value="2"></div>
+              <div class="col-4"><input class="form-control" id="a22" value="1"></div>
+              <div class="col-4"><input class="form-control" id="a23" value="1"></div>
+              <div class="col-4"><input class="form-control" id="a31" value="-1"></div>
+              <div class="col-4"><input class="form-control" id="a32" value="1"></div>
+              <div class="col-4"><input class="form-control" id="a33" value="2"></div>
+            </div>
+            <h5 class="mt-3">Vector b</h5>
+            <div class="row g-2">
+              <div class="col-4"><input class="form-control" id="b1" value="4"></div>
+              <div class="col-4"><input class="form-control" id="b2" value="6"></div>
+              <div class="col-4"><input class="form-control" id="b3" value="3"></div>
+            </div>
+            <button class="btn btn-primary mt-3" onclick="solveGaussJordan()">Resolver</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="gaussResult" class="result">Resultados aparecerán aquí.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="my-5"/>
+
+  <!-- Newton-Raphson -->
+  <section id="newton" class="py-4">
+    <h2 class="section-title">Método de Newton-Raphson</h2>
+    <p><strong>Idea:</strong> Encontrar una raíz de \(f(x)=0\) iterando
+      
+
+\[
+        x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}.
+      \]
+
+
+      La derivada define la pendiente de la tangente en \(x_n\); su intersección con el eje \(x\) da la siguiente aproximación. Converge rápido cerca de la raíz, pero puede divergir si la elección inicial es mala o si \(f'(x)\) es pequeño.</p>
+
+    <h5 class="mt-3">Pasos del algoritmo</h5>
+    <div class="step"><strong>Paso 1:</strong> Elegir \(x_0\) y tolerancia \(\varepsilon\).</div>
+    <div class="step"><strong>Paso 2:</strong> Iterar \(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\).</div>
+    <div class="step"><strong>Paso 3:</strong> Terminar cuando \(|x_{n+1}-x_n| < \varepsilon\) o \(|f(x_{n+1})| < \varepsilon\).</div>
+
+    <h5 class="mt-3">Ejemplo paso a paso</h5>
+    <p>Resolver \(x^3 + 4x^2 - 10 = 0\) con \(x_0 = 1.5\), \(\varepsilon = 10^{-4}\). Aquí
+      \(f(x)=x^3 + 4x^2 - 10\) y \(f'(x)=3x^2 + 8x\).
+    </p>
+    <div class="code-block">
+      Iteración 1: x0 = 1.5<br/>
+      f(x0)= 1.5^3 + 4(1.5)^2 - 10 = 3.375 + 9 - 10 = 2.375<br/>
+      f'(x0)= 3(1.5)^2 + 8(1.5) = 6.75 + 12 = 18.75<br/>
+      x1 = 1.5 - 2.375/18.75 ≈ 1.3733<br/><br/>
+      Iteración 2: x1 = 1.3733<br/>
+      f(x1) ≈ 1.3733^3 + 4(1.3733)^2 - 10 ≈ 0.2739<br/>
+      f'(x1) ≈ 3(1.3733)^2 + 8(1.3733) ≈ 15.55<br/>
+      x2 ≈ 1.3733 - 0.2739/15.55 ≈ 1.3557<br/><br/>
+      Iteración 3: x2 = 1.3557<br/>
+      f(x2) ≈ 0.0076 ⇒ x3 ≈ 1.3553<br/>
+      |x3 - x2| ≈ 0.0004 (aún > 1e-4), una iteración más da convergencia ≈ 1.3553.
+    </div>
+
+    <h5 class="mt-3">Mini interactivo</h5>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5>Función y derivada</h5>
+            <div class="mb-2"><input id="fExpr" class="form-control" value="x^3 + 4*x^2 - 10" placeholder="f(x) en JavaScript: usa x" /></div>
+            <div class="mb-2"><input id="dfExpr" class="form-control" value="3*x^2 + 8*x" placeholder="f'(x) en JavaScript: usa x" /></div>
+            <div class="row g-2">
+              <div class="col-4"><input id="x0" class="form-control" value="1.5" placeholder="x0" /></div>
+              <div class="col-4"><input id="tol" class="form-control" value="1e-4" placeholder="tolerancia" /></div>
+              <div class="col-4"><input id="maxIter" class="form-control" value="20" placeholder="máx iter" /></div>
+            </div>
+            <button class="btn btn-primary mt-3" onclick="solveNewton()">Iterar</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6"><div id="newtonResult" class="result">Resultados aparecerán aquí.</div></div>
+    </div>
+  </section>
+
+  <hr class="my-5"/>
+
+  <!-- Bisección -->
+  <section id="biseccion" class="py-4">
+    <h2 class="section-title">Método de Bisección</h2>
+    <p><strong>Idea:</strong> Si \(f\) es continua y \(f(a)\cdot f(b) < 0\), existe al menos una raíz en \([a,b]\) por el teorema del valor intermedio. La bisección divide el intervalo por la mitad, elige el subintervalo donde hay cambio de signo y repite hasta alcanzar la precisión deseada.</p>
+
+    <h5 class="mt-3">Pasos del algoritmo</h5>
+    <div class="step"><strong>Paso 1:</strong> Elegir \([a,b]\) tal que \(f(a)\cdot f(b) < 0\) y tolerancia \(\varepsilon\).</div>
+    <div class="step"><strong>Paso 2:</strong> Calcular \(c = \frac{a+b}{2}\).</div>
+    <div class="step"><strong>Paso 3:</strong> Si \(f(c)=0\) o \(|b-a|/2 < \varepsilon\), terminar; si \(f(a)\cdot f(c) < 0\), poner \(b \leftarrow c\); de lo contrario, \(a \leftarrow c\).</div>
+
+    <h5 class="mt-3">Ejemplo paso a paso</h5>
+    <p>Resolver \(x^3 + 4x^2 - 10 = 0\) con \([a,b]=[1,2]\), \(\varepsilon = 10^{-4}\). Se verifica \(f(1)=-5\), \(f(2)=14\), hay cambio de signo.</p>
+    <div class="code-block">
+      Iteración 1: c = (1+2)/2 = 1.5, f(c)=2.375 ⇒ signo(f(a))*signo(f(c)) < 0 ? Sí ⇒ b = 1.5<br/>
+      Iteración 2: c = (1+1.5)/2 = 1.25, f(c) ≈ -1.7969 ⇒ a = 1.25<br/>
+      Iteración 3: c = 1.375, f(c) ≈ 0.3027 ⇒ b = 1.375<br/>
+      ... continuar hasta |b-a|/2 < 1e-4. La aproximación converge ~1.365–1.355 según tolerancia.
+    </div>
+
+    <h5 class="mt-3">Mini interactivo</h5>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5>Función e intervalo</h5>
+            <div class="mb-2"><input id="fExprBis" class="form-control" value="x^3 + 4*x^2 - 10" /></div>
+            <div class="row g-2">
+              <div class="col-4"><input id="a" class="form-control" value="1" /></div>
+              <div class="col-4"><input id="b" class="form-control" value="2" /></div>
+              <div class="col-4"><input id="tolBis" class="form-control" value="1e-4" /></div>
+            </div>
+            <button class="btn btn-primary mt-3" onclick="solveBisection()">Bisecar</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6"><div id="bisResult" class="result">Resultados aparecerán aquí.</div></div>
+    </div>
+  </section>
+
+  <hr class="my-5"/>
+
+  <!-- Jacobi -->
+  <section id="jacobi" class="py-4">
+    <h2 class="section-title">Método de Jacobi</h2>
+    <p><strong>Idea:</strong> Para \(A\cdot \mathbf{x}=\mathbf{b}\), separar \(A=D+R\) con \(D\) diagonal y \(R=A-D\). El esquema iterativo es
+      
+
+\[
+        \mathbf{x}^{(k+1)} = D^{-1}(\mathbf{b} - R\mathbf{x}^{(k)}),
+      \]
+
+
+      actualizando cada componente con los valores de la iteración anterior. Converge si \(A\) es diagonalmente dominante (condición suficiente común).</p>
+
+    <h5 class="mt-3">Pasos del algoritmo</h5>
+    <div class="step"><strong>Paso 1:</strong> Reescribir cada ecuación despejando la variable correspondiente: \(x_i = \frac{1}{a_{ii}}\left(b_i - \sum_{j\neq i} a_{ij}x_j\right)\).</div>
+    <div class="step"><strong>Paso 2:</strong> Elegir \(\mathbf{x}^{(0)}\) (por ejemplo, el vector cero) y tolerancia \(\varepsilon\).</div>
+    <div class="step"><strong>Paso 3:</strong> Calcular \(\mathbf{x}^{(k+1)}\) con los \(x_j^{(k)}\) anteriores para todos los \(i\).</div>
+    <div class="step"><strong>Paso 4:</strong> Parar si \(\|\mathbf{x}^{(k+1)}-\mathbf{x}^{(k)}\|_\infty < \varepsilon\).</div>
+
+    <h5 class="mt-3">Ejemplo paso a paso</h5>
+    <p>Sea el sistema:
+      
+
+\[
+        \begin{cases}
+          10x_1 - 2x_2 + x_3 = 9 \\
+          -2x_1 + 11x_2 - x_3 = 7 \\
+          x_1 - x_2 + 10x_3 = 15
+        \end{cases}
+      \]
+
+
+      La matriz es diagonalmente dominante por filas, lo que favorece la convergencia. Con \(\mathbf{x}^{(0)}=(0,0,0)\) y \(\varepsilon=10^{-4}\):
+    </p>
+    <div class="code-block">
+      Iteración 1 (usa x^(0) = 0):<br/>
+      x1^(1) = (9 + 2*0 - 1*0)/10 = 0.9<br/>
+      x2^(1) = (7 + 2*0 + 1*0)/11 ≈ 0.63636<br/>
+      x3^(1) = (15 - 1*0 + 1*0)/10 = 1.5<br/><br/>
+      Iteración 2 (usa x^(1)):<br/>
+      x1^(2) = (9 + 2*0.63636 - 1*1.5)/10 = (9 + 1.27272 - 1.5)/10 ≈ 0.87727<br/>
+      x2^(2) = (7 + 2*0.9 + 1*1.5)/11 ≈ (7 + 1.8 + 1.5)/11 ≈ 0.92727<br/>
+      x3^(2) = (15 - 0.9 + 0.63636)/10 ≈ 1.47364<br/>
+      ... continuar hasta que el cambio sea menor que la tolerancia.
+    </div>
+
+    <h5 class="mt-3">Mini interactivo (3×3)</h5>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5>Coeficientes A (3×3) y b</h5>
+            <div class="row g-2">
+              <div class="col-4"><input class="form-control" id="ja11" value="10"></div>
+              <div class="col-4"><input class="form-control" id="ja12" value="-2"></div>
+              <div class="col-4"><input class="form-control" id="ja13" value="1"></div>
+              <div class="col-4"><input class="form-control" id="ja21" value="-2"></div>
+              <div class="col-4"><input class="form-control" id="ja22" value="11"></div>
+              <div class="col-4"><input class="form-control" id="ja23" value="-1"></div>
+              <div class="col-4"><input class="form-control" id="ja31" value="1"></div>
+              <div class="col-4"><input class="form-control" id="ja32" value="-1"></div>
+              <div class="col-4"><input class="form-control" id="ja33" value="10"></div>
+            </div>
+            <h5 class="mt-3">Vector b</h5>
+            <div class="row g-2">
+              <div class="col-4"><input class="form-control" id="jb1" value="9"></div>
+              <div class="col-4"><input class="form-control" id="jb2" value="7"></div>
+              <div class="col-4"><input class="form-control" id="jb3" value="15"></div>
+            </div>
+            <div class="row g-2 mt-2">
+              <div class="col-4"><input class="form-control" id="jTol" value="1e-4" placeholder="tolerancia" /></div>
+              <div class="col-4"><input class="form-control" id="jMax" value="25" placeholder="máx iter" /></div>
+            </div>
+            <button class="btn btn-primary mt-3" onclick="solveJacobi()">Iterar Jacobi</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6"><div id="jacobiResult" class="result">Resultados aparecerán aquí.</div></div>
+    </div>
+  </section>
+
+  <hr class="my-5"/>
+
+  <!-- Recursos -->
+  <section id="recursos" class="py-4">
+    <h2 class="section-title">Recursos y notas</h2>
+    <ul>
+      <li><strong>Gauss-Jordan:</strong> explicación de matriz aumentada, RREF y ejercicios resueltos</li>
+      <li><strong>Newton-Raphson:</strong> derivación de la fórmula y ejemplos prácticos con análisis de convergencia</li>
+      <li><strong>Bisección:</strong> algoritmo basado en el teorema del valor intermedio y ejemplos iterativos</li>
+      <li><strong>Jacobi:</strong> criterio de convergencia y formulación iterativa con separación \(A=D+R\)</li>
+    </ul>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4 mt-5">
+  <p>&copy; 2025 Métodos Numéricos | Página educativa</p>
+  <p>Autor: Alberto Isaac MAnzo De León <br/>
+    Instituto Tecnológico de Tlajomulco
+  </p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Utilidad: evaluar expresiones JS seguras para f(x)
+  function evalExpr(expr, x) {
+    // Permite + - * / ^ Math funciones básicas
+    // Reemplazar ^ por ** para JS
+    const safeExpr = expr.replace(/\^/g, '**');
+    return Function('x', 'return ' + safeExpr)(x);
+  }
+
+  // Gauss-Jordan 3x3
+  function solveGaussJordan() {
+    const A = [
+      [parseFloat(a11.value), parseFloat(a12.value), parseFloat(a13.value)],
+      [parseFloat(a21.value), parseFloat(a22.value), parseFloat(a23.value)],
+      [parseFloat(a31.value), parseFloat(a32.value), parseFloat(a33.value)]
+    ];
+    const b = [parseFloat(b1.value), parseFloat(b2.value), parseFloat(b3.value)];
+    // construir aumentada
+    let M = A.map((row, i) => [...row, b[i]]);
+    const n = 3;
+    let log = [];
+
+    for (let col = 0; col < n; col++) {
+      // buscar pivote
+      let pivot = col;
+      for (let r = col; r < n; r++) {
+        if (Math.abs(M[r][col]) > Math.abs(M[pivot][col])) pivot = r;
+      }
+      if (Math.abs(M[pivot][col]) < 1e-12) {
+        gaussResult.innerHTML = 'No hay pivote válido en la columna ' + (col+1) + '. Sistema singular o indeterminado.';
+        return;
+      }
+      // swap
+      if (pivot !== col) {
+        [M[pivot], M[col]] = [M[col], M[pivot]];
+        log.push('Intercambio de filas R' + (pivot+1) + ' ↔ R' + (col+1));
+      }
+      // escalar a 1
+      const factor = M[col][col];
+      for (let j = col; j <= n; j++) M[col][j] /= factor;
+      log.push('Escalar R' + (col+1) + ' para pivote = 1');
+
+      // anular otras filas
+      for (let r = 0; r < n; r++) {
+        if (r === col) continue;
+        const f = M[r][col];
+        if (Math.abs(f) > 1e-12) {
+          for (let j = col; j <= n; j++) M[r][j] -= f * M[col][j];
+          log.push('R' + (r+1) + ' ← R' + (r+1) + ' − (' + f.toFixed(4) + ')·R' + (col+1));
+        }
+      }
+    }
+
+    const x = [M[0][3], M[1][3], M[2][3]];
+    const matStr = M.map(r => '[' + r.map((v,i)=> (i<3? v.toFixed(4):'| '+v.toFixed(4))).join(' ') + ']').join('<br/>');
+    gaussResult.innerHTML = '<div><strong>RREF:</strong><br/>' + matStr + '</div><div class="mt-2"><strong>Solución:</strong> x=' + x[0].toFixed(6) + ', y=' + x[1].toFixed(6) + ', z=' + x[2].toFixed(6) + '</div><div class="mt-2"><strong>Pasos:</strong><br/>' + log.join('<br/>') + '</div>';
+  }
+
+  // Newton-Raphson
+  function solveNewton() {
+    const fE = fExpr.value.trim();
+    const dfE = dfExpr.value.trim();
+    let xn = parseFloat(x0.value);
+    const tol = parseFloat(tol.value);
+    const maxI = parseInt(maxIter.value, 10);
+    let lines = [];
+    for (let k = 0; k < maxI; k++) {
+      const fx = evalExpr(fE, xn);
+      const dfx = evalExpr(dfE, xn);
+      if (Math.abs(dfx) < 1e-12) {
+        lines.push('Derivada casi cero en iteración ' + (k+1) + '. Detener.');
+        break;
+      }
+      const xnext = xn - fx/dfx;
+      lines.push(`Iter ${k+1}: x=${xn.toFixed(6)}, f(x)=${fx.toExponential(3)}, f'(x)=${dfx.toExponential(3)} ⇒ x_next=${xnext.toFixed(6)} |Δ|=${Math.abs(xnext-xn).toExponential(3)}`);
+      if (Math.abs(xnext - xn) < tol) { xn = xnext; break; }
+      xn = xnext;
+    }
+    newtonResult.innerHTML = '<strong>Resultado:</strong> x ≈ ' + xn.toFixed(8) + '<br/>' + lines.join('<br/>');
+  }
+
+  // Bisección
+  function solveBisection() {
+    const fE = fExprBis.value.trim();
+    let aVal = parseFloat(a.value), bVal = parseFloat(b.value);
+    const tol = parseFloat(tolBis.value);
+    let lines = [];
+    let fa = evalExpr(fE, aVal), fb = evalExpr(fE, bVal);
+    if (fa*fb > 0) {
+      bisResult.innerHTML = 'No hay cambio de signo en ['+aVal+', '+bVal+']. Elige otro intervalo.';
+      return;
+    }
+    let c, fc, iter=0;
+    while ((bVal - aVal)/2 > tol && iter < 100) {
+      c = (aVal + bVal)/2;
+      fc = evalExpr(fE, c);
+      lines.push(`Iter ${++iter}: a=${aVal.toFixed(6)}, b=${bVal.toFixed(6)}, c=${c.toFixed(6)}, f(c)=${fc.toExponential(3)}`);
+      if (fc === 0) break;
+      if (fa*fc < 0) { bVal = c; fb = fc; } else { aVal = c; fa = fc; }
+    }
+    bisResult.innerHTML = '<strong>Resultado:</strong> raíz ≈ ' + ((aVal+bVal)/2).toFixed(8) + '<br/>' + lines.join('<br/>');
+  }
+
+  // Jacobi
+  function solveJacobi() {
+    const A = [
+      [parseFloat(ja11.value), parseFloat(ja12.value), parseFloat(ja13.value)],
+      [parseFloat(ja21.value), parseFloat(ja22.value), parseFloat(ja23.value)],
+      [parseFloat(ja31.value), parseFloat(ja32.value), parseFloat(ja33.value)]
+    ];
+    const b = [parseFloat(jb1.value), parseFloat(jb2.value), parseFloat(jb3.value)];
+    const tol = parseFloat(jTol.value);
+    const maxI = parseInt(jMax.value, 10);
+    let x = [0,0,0], xnew = [0,0,0];
+    let lines = [];
+
+    // Comprobar diagonales no nulas
+    for (let i=0;i<3;i++){
+      if (Math.abs(A[i][i]) < 1e-12) { jacobiResult.innerHTML = 'a['+i+']['+i+'] es cero. Jacobi no aplicable.'; return; }
+    }
+
+    for (let k=0;k<maxI;k++){
+      for (let i=0;i<3;i++){
+        let sum = 0;
+        for (let j=0;j<3;j++){
+          if (j!==i) sum += A[i][j]*x[j];
+        }
+        xnew[i] = (b[i] - sum)/A[i][i];
+      }
+      const diff = Math.max(Math.abs(xnew[0]-x[0]), Math.abs(xnew[1]-x[1]), Math.abs(xnew[2]-x[2]));
+      lines.push(`Iter ${k+1}: x=(${xnew.map(v=>v.toFixed(6)).join(', ')}) |Δ|∞=${diff.toExponential(3)}`);
+      x = [...xnew];
+      if (diff < tol) break;
+    }
+    jacobiResult.innerHTML = '<strong>Resultado:</strong> x ≈ ('+x.map(v=>v.toFixed(8)).join(', ')+')<br/>' + lines.join('<br/>');
+  }
+</script>
+</body>
+</html>
